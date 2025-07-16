@@ -74,6 +74,7 @@ TEST(BehaviourTree, no_loop_multiple_children) {
 
   no_loop.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions, action_executed);}));
   no_loop.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions2, action_executed2);}));
+
   EXPECT_EQ(no_loop.Tick(), Status::kFailure);
   check_conditions = true;
   EXPECT_EQ(no_loop.Tick(), Status::kRunning);
@@ -114,10 +115,16 @@ TEST(BehaviourTree, selector_one_child) {
   selector.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions, action_executed);}));
 
   EXPECT_EQ(selector.Tick(), Status::kFailure);
+
   check_conditions = true;
   EXPECT_EQ(selector.Tick(), Status::kRunning);
+
   action_executed = true;
   EXPECT_EQ(selector.Tick(), Status::kSuccess);
+
+  check_conditions = false;
+  action_executed = true;
+  EXPECT_EQ(selector.Tick(), Status::kFailure);
 }
 
 TEST(BehaviourTree, selector_multiple_children) {
@@ -125,6 +132,7 @@ TEST(BehaviourTree, selector_multiple_children) {
   bool check_conditions2 = false;
   bool action_executed = false;
   bool action_executed2 = false;
+
   Selector selector;
 
   selector.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions, action_executed);}));
