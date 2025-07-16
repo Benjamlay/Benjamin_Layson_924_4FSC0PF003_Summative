@@ -19,15 +19,15 @@ private:
 
     sf::Vector2u window_size_;
 
-    void AddSprite(sf::Vector2f position);
+    void AddSprite(sf::Vector2f position, TextureManager& texture_manager);
 
 public:
     explicit GameSpriteManager(sf::Vector2u winSize);
 
-    void AddSpriteAtRandomPosition();
-    void AddSpriteAtMouse(sf::Vector2f mousePos);
+    void AddSpriteAtRandomPosition(TextureManager& texture_manager);
+    void AddSpriteAtMouse(sf::Vector2f mousePos, TextureManager& texture_manager);
 
-    void Update(float deltaTime);
+    void Update(float deltaTime, TextureManager& texture_manager);
     void Draw(sf::RenderWindow& window) const;
 
     [[nodiscard]] size_t GetActiveSpritesCount() const;

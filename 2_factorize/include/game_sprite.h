@@ -6,6 +6,7 @@
 #define GAME_SPRITE_H
 #include <random>
 #include <SFML/Graphics.hpp>
+#include "texture_manager.h"
 
 // Classe Sprite personnalisée
 class GameSprite {
@@ -17,6 +18,7 @@ class GameSprite {
     sf::Color current_color_;
     float scale_;
     int texture_idx_;
+    sf::Texture texture_;
 
     // Générateur de nombres aléatoires
     std::random_device rd_;
@@ -27,9 +29,9 @@ class GameSprite {
     std::uniform_real_distribution<float> scale_dist_;
 
 public:
-    explicit GameSprite(sf::Vector2f pos);
+    explicit GameSprite(sf::Vector2f pos, TextureManager& texture_manager);
 
-    void Update(float deltaTime);
+    void Update(float deltaTime, TextureManager& texture_manager);
     void Draw(sf::RenderWindow& window);
 
     [[nodiscard]] bool is_active() const ;

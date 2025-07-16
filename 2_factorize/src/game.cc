@@ -6,7 +6,7 @@
 Game::Game() : window_(sf::VideoMode({1200, 800}), "Jeu de Sprites SFML", sf::Style::Close),
          sprite_manager_(window_.getSize()),
          info_text_(font_),
-         instructions_text_(font_){
+         instructions_text_(font_), texture_manager_("_assets/splats/") {
 
     window_.setFramerateLimit(60);
 
@@ -15,18 +15,18 @@ Game::Game() : window_(sf::VideoMode({1200, 800}), "Jeu de Sprites SFML", sf::St
         std::cout << "Police arial.ttf non trouvée, utilisation de la police par défaut" << std::endl;
     }
 
-    std::cout << "=== JEU DE SPRITES SFML ===" << std::endl;
-    std::cout << "Contrôles :" << std::endl;
-    std::cout << "- ESPACE : Ajouter un sprite à une position aléatoire" << std::endl;
-    std::cout << "- CLIC GAUCHE : Ajouter un sprite à la position de la souris" << std::endl;
-    std::cout << "- C : Effacer tous les sprites" << std::endl;
-    std::cout << "- ÉCHAP : Quitter le jeu" << std::endl;
-    std::cout << "================================" << std::endl;
+    // std::cout << "=== JEU DE SPRITES SFML ===" << std::endl;
+    // std::cout << "Contrôles :" << std::endl;
+    // std::cout << "- ESPACE : Ajouter un sprite à une position aléatoire" << std::endl;
+    // std::cout << "- CLIC GAUCHE : Ajouter un sprite à la position de la souris" << std::endl;
+    // std::cout << "- C : Effacer tous les sprites" << std::endl;
+    // std::cout << "- ÉCHAP : Quitter le jeu" << std::endl;
+    // std::cout << "================================" << std::endl;
 
 }
 
 void Game::Run(){
-
+    texture_manager_.LoadTextures();
     SetupText();
 
     while (window_.isOpen()) {
@@ -50,6 +50,7 @@ void Game::SetupText(){
     instructions_text_.setPosition({10, static_cast<float>(window_.getSize().y - 80)});
     instructions_text_.setString(
         "ESPACE: Sprite aléatoire | CLIC GAUCHE: Sprite à la souris | C: Effacer | S: Stats | ÉCHAP: Quitter");
+
 }
 
 void Game::HandleMousePressed(const sf::Event::MouseButtonPressed *mousePressed) {
@@ -57,7 +58,7 @@ void Game::HandleMousePressed(const sf::Event::MouseButtonPressed *mousePressed)
         sprite_manager_.AddSpriteAtMouse({
             static_cast<float>(mousePressed->position.x),
             static_cast<float>(mousePressed->position.y)
-        });
+        }, texture_manager_);
     }
 }
 
@@ -81,7 +82,7 @@ void Game::HandleEvents(){
 void Game::HandleKeyPress(const sf::Keyboard::Key key){
     switch (key) {
         case sf::Keyboard::Key::Space:
-            sprite_manager_.AddSpriteAtRandomPosition();
+            sprite_manager_.AddSpriteAtRandomPosition(texture_manager_);
             break;
 
         case sf::Keyboard::Key::C:
@@ -100,7 +101,7 @@ void Game::HandleKeyPress(const sf::Keyboard::Key key){
 
 void Game::Update(){
     const float deltaTime = clock_.restart().asSeconds();
-    sprite_manager_.Update(deltaTime);
+    sprite_manager_.Update(deltaTime, texture_manager_);
 }
 
 void Game::Render(){

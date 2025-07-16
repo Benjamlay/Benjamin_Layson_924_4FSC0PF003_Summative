@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "game_sprite_manager.h"
+#include "texture_manager.h"
 
 // Classe principale du jeu
 class Game {
@@ -18,6 +19,7 @@ class Game {
     sf::Font font_;
     sf::Text info_text_;
     sf::Text instructions_text_;
+    TextureManager texture_manager_;
 
 public:
     Game();
