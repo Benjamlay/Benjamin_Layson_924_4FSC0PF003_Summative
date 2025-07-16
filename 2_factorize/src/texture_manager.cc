@@ -11,12 +11,13 @@ void TextureManager::LoadTextures() {
     throw std::runtime_error("Folder does not exist");
   }
 
-  for (int i = 0; i < textures_.size(); ++i) {
+  for (int i = 0; i < folder_path_.size(); ++i) {
     sf::Texture texture;
     if (!texture.loadFromFile(folder_path_ + std::format("splat{:02d}.png", i))) {
       throw std::runtime_error("Could not load texture");
     }
-    textures_.emplace(i, texture);
+    //textures_.emplace(i, texture);
+    textures_.emplace(i, std::move(texture));
   }
   std::cout << textures_.size() << std::endl;
 }

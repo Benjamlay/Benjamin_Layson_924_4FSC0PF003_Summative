@@ -18,7 +18,7 @@ class GameSprite {
     sf::Color current_color_;
     float scale_;
     int texture_idx_;
-    sf::Texture texture_;
+    sf::Texture texture_ = sf::Texture();
 
     // Générateur de nombres aléatoires
     std::random_device rd_;
